@@ -15,4 +15,6 @@ public class Dish
     public int CategoryId { get; set; }
     
     public Category Category { get; set; }
+    
+    public IEnumerable<OrderItem> OrderItems { get; set; }
 }
