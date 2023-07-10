@@ -1,0 +1,32 @@
+@model Category
+
+@{
+    ViewData["Title"] = (Model.Id == 0 ? "Create new " : "Edit ") + "category";
+    Layout = "_Layout";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<hr>
+
+<form method="post">
+    <div class="form-floating mb-3">
+        <input asp-for="Name" class="form-control" placeholder="name">
+        <label asp-for="Name">Name</label>
+    </div>
+    
+    <hr>
+    
+    <div class="btn-group">
+        @if (Model.Id != 0)
+        {
+            <input type="submit" class="btn btn-primary" value="Edit">
+        }
+        else
+        {
+            <input type="submit" class="btn btn-primary" value="Create">
+        }
+        
+        <a asp-action="Index" class="btn btn-danger">Cancel</a>
+    </div>
+</form>
