@@ -1,0 +1,41 @@
+@model Employee
+
+@{
+    ViewData["Title"] = "Delete employee";
+    Layout = "_Layout";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<hr>
+
+<form method="post">
+    <div class="form-floating mb-3">
+        <input disabled="disabled" asp-for="Name" placeholder="name" class="form-control">
+        <label asp-for="Name">Name</label>
+    </div>
+    
+    <div class="form-floating mb-3">
+        <input disabled="disabled" asp-for="Surname" placeholder="surname" class="form-control">
+        <label asp-for="Surname">Surname</label>
+    </div>
+    
+    <div class="form-floating mb-3">
+        <input disabled="disabled" asp-for="Phone" placeholder="phone" class="form-control">
+        <label asp-for="Phone">Phone</label>
+    </div>
+    
+    <div class="form-floating mb-3">
+        <input class="form-control" disabled="disabled" asp-for="Role">
+        <label asp-for="Role">Role</label>
+    </div>
+    
+    <hr>
+    
+    <input type="hidden" asp-for="Id">
+    
+    <div class="btn-group">
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-warning">Cancel</a>
+    </div>
+</form>

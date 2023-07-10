@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 namespace CafeSystem.Models;
 
 public class Employee
@@ -14,7 +16,7 @@ public class Employee
     
     public Role Role { get; set; }
 
-    public IEnumerable<Order> Orders { get; set; }
+    [ValidateNever] public IEnumerable<Order> Orders { get; set; }
 }
 
 public enum Role
