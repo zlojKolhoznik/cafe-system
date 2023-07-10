@@ -1,0 +1,52 @@
+@model CafeSystem.Areas.Admin.ViewModels.DishViewModel
+
+@{
+    ViewData["Title"] = (Model.Dish.Id == 0 ? "Create new " : "Edit ") + "dish";
+    Layout = "_Layout";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<hr>
+
+<div asp-validation-summary="All"></div>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="form-floating mb-3">
+        <input asp-for="Dish.Name" class="form-control" placeholder="name">
+        <label asp-for="Dish.Name">Name</label>
+    </div>
+    
+    <div class="form-floating mb-3">
+        <input asp-for="Dish.Price" class="form-control" placeholder="price">
+        <label asp-for="Dish.Price">Price</label>
+    </div>
+    
+    <div class="form-floating mb-3">
+        <select asp-for="Dish.CategoryId" class="form-select" asp-items="@Model.Categories">
+            <option disabled="disabled" selected="selected">Select a category</option>
+        </select>
+        <label asp-for="Dish.CategoryId">Category</label>
+    </div>
+    
+    <div class="input-group mb-3">
+        <label asp-for="Dish.ImagePath" class="text-muted input-group-text" for="fileInp">Image</label>
+        <input type="file" name="image" class="form-control" accept="image/*" id="fileInp"/>
+    </div>
+    
+    <input type="hidden" asp-for="Dish.ImagePath" value="@Model.Dish.ImagePath">
+    <input type="hidden" asp-for="Dish.Id" value="@Model.Dish.Id">
+    
+    <div class="btn-group">
+        @if (Model.Dish.Id != 0)
+        {
+            <input type="submit" class="btn btn-primary" value="Edit">
+        }
+        else
+        {
+            <input type="submit" class="btn btn-primary" value="Create">
+        }
+            
+        <a asp-action="Index" class="btn btn-danger">Cancel</a>
+    </div>
+</form>

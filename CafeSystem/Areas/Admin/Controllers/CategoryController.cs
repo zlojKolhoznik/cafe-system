@@ -41,12 +41,11 @@ public class CategoryController : Controller
     
     // POST
     [HttpPost]
-    public IActionResult Upsert(Category? category)
+    public IActionResult Upsert(Category category)
     {
-        if (category is null)
+        if (!ModelState.IsValid)
         {
-            ViewData["error"] = "Unknown error occured";
-            return RedirectToAction("Index");
+            return View(category);
         }
 
         if (category.Id != 0)

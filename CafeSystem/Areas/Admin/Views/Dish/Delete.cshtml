@@ -1,0 +1,35 @@
+@model Dish
+    
+@{
+    ViewData["Title"] = "Delete dish";
+    Layout = "_Layout";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="form-floating mb-3">
+        <input asp-for="Name" disabled="disabled" class="form-control" placeholder="name">
+        <label asp-for="Name">Name</label>
+    </div>
+    
+    <div class="form-floating mb-3">
+        <input asp-for="Price" disabled="disabled" class="form-control" placeholder="price">
+        <label asp-for="Price">Price</label>
+    </div>
+    
+    <div class="form-floating mb-3">
+        <input id="category" disabled="disabled" class="form-control" placeholder="category" value="@Model.Category.ToString()">
+        <label for="category">Category</label>
+    </div>
+    
+    <input type="hidden" asp-for="ImagePath" value="@Model.ImagePath">
+    <input type="hidden" asp-for="Id" value="@Model.Id">
+    <input type="hidden" asp-for="CategoryId" value="@Model.CategoryId">
+    
+    <div class="btn-group">
+            <input type="submit" class="btn btn-danger" value="Delete">
+            
+        <a asp-action="Index" class="btn btn-warning">Cancel</a>
+    </div>
+</form>

@@ -18,13 +18,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Areas\Admin\Data\" />
-      <Folder Include="Areas\Admin\Models\" />
+      <AdditionalFiles Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\Shared\_ValidationScriptsPartial.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
-      <AdditionalFiles Include="Areas\Admin\Views\Shared\_ValidationScriptsPartial.cshtml" />
+      <Folder Include="wwwroot\assets\images\" />
     </ItemGroup>
 
 </Project>
