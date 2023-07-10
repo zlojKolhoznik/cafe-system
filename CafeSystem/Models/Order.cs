@@ -15,6 +15,8 @@ public class Order
     public OrderStatus Status { get; set; }
     
     public IEnumerable<OrderItem> Items { get; set; }
+    
+    public IEnumerable<Employee> Employees { get; set; }
 }
 
 public enum OrderStatus
