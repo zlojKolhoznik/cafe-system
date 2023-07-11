@@ -1,0 +1,60 @@
+@model CafeSystem.Areas.Admin.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register a new employee";
+    Layout = "_Layout";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<hr>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+    <div class="row mb-3">
+        <div class="form-floating mb-3 col-6">
+            <input asp-for="Name" class="form-control" autocomplete="username" aria-required="true" placeholder="email">
+            <label asp-for="Name" class="mx-2"></label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3 col-6">
+            <input asp-for="Surname" class="form-control" autocomplete="username" aria-required="true" placeholder="email">
+            <label asp-for="Surname" class="mx-2"></label>
+            <span asp-validation-for="Surname" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" placeholder="email">
+        <label asp-for="Email"></label>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Phone" class="form-control" autocomplete="username" aria-required="true" placeholder="email">
+        <label asp-for="Phone"></label>
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <div class="row mb-3">
+        <div class="form-floating mb-3 col-6">
+            <input asp-for="Password" class="form-control" autocomplete="username" aria-required="true" placeholder="email">
+            <label asp-for="Password" class="mx-2"></label>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3 col-6">
+            <input asp-for="ConfirmPassword" class="form-control" autocomplete="username" aria-required="true" placeholder="email">
+            <label asp-for="ConfirmPassword" class="mx-2"></label>
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-floating mb-3">
+        <select class="form-select" asp-for="Role" asp-items="@Model.Roles!.Select(r => new SelectListItem(r, r))">
+            <option disabled selected>Select a role</option>
+        </select>
+        <label asp-for="Role"></label>
+        <span asp-validation-for="Role" class="text-danger"></span>
+    </div>
+    
+    <div class="btn-group">
+        <button type="submit" class="btn btn-primary">Register</button>
+        <a asp-action="Index" class="btn btn-danger">Cancel</a>
+    </div>
+</form>

@@ -1,0 +1,47 @@
+@model Employee
+
+@{
+    ViewData["Title"] = "Fire employee";
+    Layout = "_Layout";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<hr>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+    <div class="row mb-3">
+        <div class="form-floating mb-3 col-6">
+            <input disabled asp-for="Name" class="form-control" autocomplete="username" aria-required="true" placeholder="email">
+            <label class="form-label mx-2" asp-for="Name"></label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3 col-6">
+            <input disabled asp-for="Surname" class="form-control" autocomplete="username" aria-required="true" placeholder="email">
+            <label class="form-label mx-2" asp-for="Surname"></label>
+            <span asp-validation-for="Surname" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-floating mb-3">
+        <input disabled asp-for="Email" class="form-control" autocomplete="username" aria-required="true" placeholder="email">
+        <label class="form-label" asp-for="Email"></label>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input disabled asp-for="PhoneNumber" class="form-control" autocomplete="username" aria-required="true" placeholder="email">
+        <label class="form-label" asp-for="PhoneNumber"></label>
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input disabled type="text" value="@ViewData["Role"]" id="roleTxt" class="form-control"/>
+        <label class="form-label" for="roleTxt">Role</label>
+    </div>
+    
+    <input type="hidden" asp-for="Id">
+    
+    <div class="btn-group">
+        <button type="submit" class="btn btn-danger">Fire</button>
+        <a asp-action="Index" class="btn btn-warning">Cancel</a>
+    </div>
+</form>
