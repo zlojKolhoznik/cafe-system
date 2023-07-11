@@ -22,7 +22,7 @@ public class EmployeeController : Controller
     }
     
     // GET
-    public IActionResult Upsert(int? id)
+    public IActionResult Upsert(string? id)
     {
         var employee = new Employee();
         if (id is not null)
@@ -48,7 +48,7 @@ public class EmployeeController : Controller
             return View(employee);
         }
         
-        if (employee.Id == 0)
+        if (string.IsNullOrEmpty(employee.Id))
         {
             _dbContext.Employees.Add(employee);
             ViewData["success"] = "Employee added successfully";
@@ -64,7 +64,7 @@ public class EmployeeController : Controller
     }
     
     // GET
-    public IActionResult Delete(int? id)
+    public IActionResult Delete(string? id)
     {
         if (id is null)
         {
@@ -86,7 +86,7 @@ public class EmployeeController : Controller
     [HttpPost]
     public IActionResult Delete(Employee employee)
     {
-        if (employee.Id == 0)
+        if (string.IsNullOrEmpty(employee.Id))
         {
             ViewData["error"] = "Employee not found";
             return RedirectToAction("Index");

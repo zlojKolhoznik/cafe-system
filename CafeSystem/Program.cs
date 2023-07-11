@@ -1,5 +1,6 @@
 using CafeSystem.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddDbContext<CafeDbContext>(optionsBuilder =>
 {
     optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("Main"));
 });
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<CafeDbContext>();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 var app = builder.Build();

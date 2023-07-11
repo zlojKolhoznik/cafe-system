@@ -1,9 +1,10 @@
 ﻿using CafeSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace CafeSystem.Data;
 
-public class CafeDbContext : DbContext
+public class CafeDbContext : IdentityDbContext
 {
     public CafeDbContext(DbContextOptions<CafeDbContext> options) : base(options)
     {

@@ -1,8 +1,7 @@
-@using Microsoft.EntityFrameworkCore.Metadata.Conventions
 @model Employee
 
 @{
-    ViewData["Title"] = Model.Id == 0 ? "Register new employee" : "Edit employee";
+    ViewData["Title"] = string.IsNullOrEmpty(Model.Id) ? "Register new employee" : "Edit employee";
     Layout = "_Layout";
 }
 
@@ -24,8 +23,8 @@
     </div>
     
     <div class="form-floating mb-3">
-        <input asp-for="Phone" placeholder="phone" class="form-control">
-        <label asp-for="Phone">Phone</label>
+        <input asp-for="PhoneNumber" placeholder="phone" class="form-control">
+        <label asp-for="PhoneNumber">Phone</label>
     </div>
     
     <div class="form-floating mb-3">

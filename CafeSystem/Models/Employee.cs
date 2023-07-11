@@ -1,16 +1,13 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace CafeSystem.Models;
 
-public class Employee
+public class Employee : IdentityUser
 {
-    public int Id { get; set; }
-    
     public string Name { get; set; }
 
     public string Surname { get; set; }
-    
-    public string Phone { get; set; }
     
     public string Password { get; set; }
     
