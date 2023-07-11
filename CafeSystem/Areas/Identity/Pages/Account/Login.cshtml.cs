@@ -2,18 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 namespace CafeSystem.Areas.Identity.Pages.Account
 {
@@ -21,11 +14,15 @@ namespace CafeSystem.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -65,8 +62,7 @@ namespace CafeSystem.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            public string Username { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -111,30 +107,63 @@ namespace CafeSystem.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+                await EnsureAdminExistsAsync();
+
+                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe,
+                    lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    var user = await _userManager.FindByNameAsync(Input.Username);
+                    if (_userManager.IsInRoleAsync(user, StaticDetails.RoleAdmin).GetAwaiter().GetResult())
+                    {
+                        return RedirectToAction("Index", "Home", new { area = "Admin" });
+                    }
+
+                    if (!_userManager.IsInRoleAsync(user, StaticDetails.RoleNone).GetAwaiter().GetResult())
+                    {
+                        return RedirectToAction("Index", "Home", new { area = "Employee" });
+                    }
+
+                    return RedirectToPage("./AccessDenied");
                 }
+
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    return RedirectToPage("./LoginWith2fa",
+                        new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
+
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
+
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return Page();
             }
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+        
+        private async Task EnsureAdminExistsAsync()
+        {
+            if (!_roleManager.RoleExistsAsync(StaticDetails.RoleAdmin).GetAwaiter().GetResult())
+            {
+                await _roleManager.CreateAsync(new IdentityRole(StaticDetails.RoleAdmin));
+                await _roleManager.CreateAsync(new IdentityRole(StaticDetails.RoleCook));
+                await _roleManager.CreateAsync(new IdentityRole(StaticDetails.RoleWaiter));
+                await _roleManager.CreateAsync(new IdentityRole(StaticDetails.RoleNone));
+            }
+
+            var admin = _userManager.Users.FirstOrDefault(u => u.UserName == "admin");
+            if (!_userManager.IsInRoleAsync(admin, StaticDetails.RoleAdmin).GetAwaiter().GetResult())
+            {
+                _userManager.AddToRoleAsync(admin, StaticDetails.RoleAdmin).Wait();
+            }
         }
     }
 }

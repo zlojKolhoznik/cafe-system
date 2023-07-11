@@ -1,6 +1,8 @@
 using CafeSystem.Data;
+using CafeSystem.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +13,17 @@ builder.Services.AddDbContext<CafeDbContext>(optionsBuilder =>
     optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("Main"));
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<CafeDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<CafeDbContext>().AddDefaultTokenProviders();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
+
+builder.Services.AddScoped<IEmailSender, EmailSenderMock>();
 
 var app = builder.Build();
 
@@ -34,5 +45,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Admin}/{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
 
 app.Run();

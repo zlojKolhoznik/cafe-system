@@ -1,6 +1,7 @@
 using CafeSystem.Areas.Admin.ViewModels;
 using CafeSystem.Data;
 using CafeSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CafeSystem.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = StaticDetails.RoleAdmin)]
 public class DishController : Controller
 {
     private CafeDbContext _dbContext;
