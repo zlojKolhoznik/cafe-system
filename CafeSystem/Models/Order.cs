@@ -21,9 +21,9 @@ public class Order
 
 public enum OrderStatus
 {
-    Creating,
     Placed,
-    InProcess,
+    Preparing,
+    FoodReady,
     Delivering,
     CheckingOut,
     Completed
