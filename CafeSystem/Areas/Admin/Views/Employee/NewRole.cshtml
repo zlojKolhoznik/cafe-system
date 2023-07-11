@@ -1,0 +1,25 @@
+@model System.Collections.Generic.IEnumerable<string>
+
+@{
+    ViewData["Title"] = "Set new role";
+    Layout = "_Layout";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<hr>
+
+<form method="post">
+    <div class="form-floating mb-3">
+        <select id="newRole" value="@ViewData["Role"]" name="newRole" class="form-select" asp-items="@Model.Select(r => new SelectListItem(r, r))"></select>
+        <label for="newRole">New role</label>
+    </div>
+    
+    <input type="hidden" name="oldRole" value="@ViewData["Role"]">
+    <input type="hidden" name="id" value="@ViewData["Id"]">
+    
+    <div class="btn-group">
+        <button type="submit" class="btn btn-primary">Set</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
