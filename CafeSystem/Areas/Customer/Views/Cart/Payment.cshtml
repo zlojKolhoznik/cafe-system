@@ -1,0 +1,43 @@
+@model System.Collections.Generic.IEnumerable<CafeSystem.Models.Order>
+
+@{
+    ViewData["Title"] = "Active payments";
+    Layout = "_Layout";
+}
+
+<h2 class="text-primary text-center">Active payments for table #@ViewData["TableNumber"]</h2>
+<hr>
+
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Food</th>
+        <th>Total</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach(var order in Model)
+    {
+        <tr>
+            <td>@order.Id</td>
+            <td>
+                <ul>
+                    @foreach (var orderItem in order.Items)
+                    {
+                        <li>@orderItem.Dish.Name &times; @orderItem.Quantity</li>
+                    }
+                </ul>
+            </td>
+            <td>@order.Total₴</td>
+            <td>
+                <form method="post">
+                    <input type="hidden" name="orderId" value="@order.Id"/>
+                    <input type="submit" class="btn btn-primary" value="Pay"/>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
