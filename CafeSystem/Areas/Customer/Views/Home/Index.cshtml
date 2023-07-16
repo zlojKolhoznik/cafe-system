@@ -1,0 +1,58 @@
+@model System.Collections.Generic.IEnumerable<CafeSystem.Models.Dish>
+
+@{
+    ViewData["Title"] = "Menu";
+    Layout = "_Layout";
+}
+
+@if (ViewData["TableNumber"] is null)
+{
+    <form class="card" method="post">
+        <h3 class="text-primary card-header text-center">Select your table number</h3>
+        <div class="card-body">
+            <div class="input-group mb-3">
+                <select name="tableRequest" class="form-select" id="tableRequest">
+                    <option selected disabled>Choose...</option>
+                    @foreach(var n in Enumerable.Range(1, 50))
+                    {
+                        <option value="@n">@n</option>
+                    }
+                </select>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Go to menu"/>
+        </div>
+    </form>
+    
+    <p class="divider-text d-flex pt-3">OR</p>
+    
+    <p class="text-dark text-uppercase text-center" style="font-size: 2rem;">Scan QR code that is on the table</p>
+}
+else
+{
+    <h2 class="text-primary text-center">Menu for table #@ViewData["TableNumber"]</h2>
+    <hr>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3">
+                <div class="card mb-4 p-3 shadow-sm">
+                    <img class="card-img-top" src="~/@item.ImagePath" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-subtitle text-muted">@item.Category</p>
+                        <p class="card-text text-info">@item.Price₴</p>
+                        <form method="post">
+                            <div class="input-group mb-3">
+                                <input class="form-control text-end" type="number" name="quantity" id="quantity" value="1" min="1">
+                                <span class="input-group-text">Quantity</span>
+                            </div>
+                            <input type="hidden" name="dishId" value="@item.Id"/>
+                            <input type="hidden" name="tableNumber" value="@ViewData["TableNumber"]"/>
+                            <input type="submit" class="btn btn-primary" value="Add to cart"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

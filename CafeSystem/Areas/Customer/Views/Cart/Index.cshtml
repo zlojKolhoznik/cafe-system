@@ -1,0 +1,54 @@
+@model CafeSystem.Models.Order?
+
+@{
+    ViewData["Title"] = "Cart";
+    Layout = "_Layout";
+}
+
+<h2 class="text-center text-primary">Cart for table #@ViewData["TableNumber"]</h2>
+<hr/>
+
+@if (Model is null)
+{
+    <h4 class="text-center text-danger">Cart is empty</h4>
+    <a asp-action="Index" asp-controller="Home" asp-route-id="@ViewData["TableNumber"]" class="btn btn-secondary">Back to menu</a>
+}
+else
+{
+    <table class="table table-hover table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+            <th scope="col">Total</th>
+            <th scope="col"></th> <!-- for delete button -->
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Dish.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.Dish.Price₴</td>
+                <td>@(item.Quantity * item.Dish.Price)₴</td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="bi bi-trash3-fill"></i></a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between">
+        <h4 class="text-primary">Total:</h4>
+        <h4 class="text-primary">@Model.Total₴</h4>
+    </div>
+
+    <form method="post">
+        <input type="hidden" name="orderId" value="@Model.Id"/>
+        <input type="submit" class="btn btn-primary" value="Confirm order"/>
+        <a asp-action="Index" asp-controller="Home" asp-route-id="@Model.TableNumber" class="btn btn-secondary">Back to menu</a>
+    </form>
+}

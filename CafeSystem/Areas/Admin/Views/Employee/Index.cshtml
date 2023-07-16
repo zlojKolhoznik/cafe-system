@@ -1,0 +1,51 @@
+@model CafeSystem.Areas.Admin.ViewModels.EmployeeViewModel
+
+@{
+    ViewData["Title"] = "Employee List";
+    Layout = "_Layout";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<hr>
+
+@if (Model.EmployeesRoles.Count() != 0)
+{
+    <table class="table table-striped">
+        <tr>
+            <th style="width: 40%">Name</th>
+            <th style="width: 20%">Role</th>
+            <th style="width: 15%">Login</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var employeeRole in Model.EmployeesRoles!)
+        {
+            <tr>
+                <td>@employeeRole.Key.Name&nbsp;@employeeRole.Key.Surname</td>
+                <td>@employeeRole.Value</td>
+                <td>@employeeRole.Key.UserName</td>
+                <td class="btn-group">
+                    @if (employeeRole.Key.UserName != User.Identity.Name)
+                    {
+                        <a asp-action="NewRole" asp-route-id="@employeeRole.Key.Id" class="btn btn-outline-secondary">Set role</a>
+                        <a asp-action="Delete" asp-route-id="@employeeRole.Key.Id" class="btn btn-outline-danger">Fire</a>
+                    }
+                    else
+                    {
+                        <span class="btn btn-outline-secondary disabled">Set role</span>
+                        <span class="btn btn-outline-danger disabled">Fire</span>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+
+    <hr>
+    
+    <a class="btn btn-primary" asp-action="Register">Register new employee</a>
+}
+else
+{
+    <span class="text-primary">No employees found, you can </span>
+    <a class="btn btn-link" asp-action="Register">register new employee.</a>
+}
