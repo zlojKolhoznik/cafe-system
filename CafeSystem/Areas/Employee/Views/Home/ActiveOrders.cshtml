@@ -1,7 +1,7 @@
-@model IEnumerable<CafeSystem.Models.Order>
+@model System.Collections.Generic.IEnumerable<CafeSystem.Models.Order>
 
 @{
-    ViewData["Title"] = "Available Orders";
+    ViewData["Title"] = "Active Orders";
     Layout = "_Layout";
 }
 
@@ -11,7 +11,7 @@
 
 @if (!Model.Any())
 {
-    <h3 class="text-center text-danger">No available orders</h3>
+    <h3 class="text-center text-danger">No active orders</h3>
 }
 else
 {
@@ -33,7 +33,15 @@ else
                 <td>@(order.IsPaymentDone ? "Yes" : "No")</td>
                 <td>
                     <div class="btn-group">
-                        <a asp-action="Take" class="btn btn-primary" asp-route-id="@order.Id">Take</a>
+                        @switch (order.Status)
+                        {
+                            case OrderStatus.Preparing:
+                                <a asp-action="PromoteOrder" class="btn btn-primary" asp-route-id="@order.Id">Ready</a>
+                                break;
+                            case OrderStatus.Delivering:
+                                <a asp-action="PromoteOrder" class="btn btn-primary" asp-route-id="@order.Id">Delivered</a>
+                                break;
+                        }
                         <a asp-action="Details" class="btn btn-secondary" asp-route-id="@order.Id">Details</a>
                     </div>
                 </td>
@@ -41,8 +49,4 @@ else
         }
         </tbody>
     </table>
-
-    <hr>
-
 }
-<a class="btn btn-primary" asp-action="ActiveOrders">Active Orders</a>

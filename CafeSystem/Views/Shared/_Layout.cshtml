@@ -20,8 +20,22 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    @if (ViewContext.RouteData.DataTokens["area"]?.ToString() != "Admin" && ViewContext.RouteData.DataTokens["area"]?.ToString() != "Employee"
-                         && ViewData["TableNumber"] is not null)
+                    @if (ViewContext.RouteData.Values["area"]?.ToString() == "Employee")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-action="Index">Available orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-action="ActiveOrders">Active orders</a>
+                        </li>
+                    }
+                    else if (ViewContext.RouteData.Values["area"]?.ToString() == "Admin")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-action="Index">Home</a>
+                        </li>
+                    }
+                    else if (ViewData["TableNumber"] is not null)
                     {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Customer" asp-controller="Cart" asp-action="Index" asp-route-id="@ViewData["TableNumber"]">Cart <i class="bi bi-cart"></i></a>
@@ -31,7 +45,7 @@
                         </li>
                     }
                 </ul>
-                @if (ViewContext.RouteData.DataTokens["area"]?.ToString() == "Admin" || ViewContext.RouteData.DataTokens["area"]?.ToString() == "Employee")
+                @if (ViewContext.RouteData.Values["area"]?.ToString() == "Admin" || ViewContext.RouteData.Values["area"]?.ToString() == "Employee")
                 {
                     <partial name="_LoginPartial"/>
                 }
@@ -47,7 +61,7 @@
 
 <footer class="border-top footer text-muted fixed-bottom">
     <div class="container">
-        @if (ViewContext.RouteData.DataTokens["area"]?.ToString() != "Admin" && ViewContext.RouteData.DataTokens["area"]?.ToString() != "Employee"
+        @if (ViewContext.RouteData.Values["area"]?.ToString() != "Admin" && ViewContext.RouteData.Values["area"]?.ToString() != "Employee"
              && ViewData["TableNumber"] is not null)
         {
             <a class="text-dark text-decoration-none" asp-area="" asp-controller="Home" asp-action="Index">Wrong table number? Click here</a>
