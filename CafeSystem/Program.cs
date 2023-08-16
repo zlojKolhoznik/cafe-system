@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<CafeDbContext>(optionsBuilder =>
 {
-    optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("Main"));
+    optionsBuilder.UseMySQL(builder.Configuration.GetConnectionString("MySql")!);
 });
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<CafeDbContext>().AddDefaultTokenProviders();
