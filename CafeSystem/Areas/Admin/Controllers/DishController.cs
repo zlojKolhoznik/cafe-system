@@ -62,7 +62,7 @@ public class DishController : Controller
             if (image is not null)
             {
                 string filename = Guid.NewGuid() + Path.GetExtension(image.FileName);
-                string imagesPath = Path.Combine(wwwRootPath, @"assets\images");
+                string imagesPath = Path.Combine(wwwRootPath, @"assets/images");
                 if (!string.IsNullOrEmpty(dish.ImagePath))
                 {
                     string oldImage = dish.ImagePath;
