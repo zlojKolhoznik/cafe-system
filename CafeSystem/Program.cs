@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSystemd();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
