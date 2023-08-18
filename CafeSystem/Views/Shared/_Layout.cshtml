@@ -60,7 +60,7 @@
 </div>
 
 <footer class="border-top footer text-muted fixed-bottom">
-    <div class="container">
+    <div class="container d-flex justify-content-between">
         @if (ViewContext.RouteData.Values["area"]?.ToString() != "Admin" && ViewContext.RouteData.Values["area"]?.ToString() != "Employee"
              && ViewData["TableNumber"] is not null)
         {
