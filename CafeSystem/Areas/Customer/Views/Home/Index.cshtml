@@ -33,21 +33,36 @@ else
     <hr>
     
     <form method="get">
-        <select class="form-select" name="selectedCategoryId" id="selectedCategoryId">
-            @if (Model.SelectedCategoryId is null or 0)
-            {
-                <option selected disabled>Choose...</option>
-            }
-            
-            @foreach (var category in Model.Categories)
-            {
-                <option value="@category.Id" @(Model.SelectedCategoryId == category.Id ? "selected" : "")>@category.Name</option>
-            }
-            
-            <option value="0" @(Model.SelectedCategoryId == 0 ? "selected" : "")>All</option>
-        </select>
-        <label class="form-label" for="selectedCategoryId">Choose category</label>
-        
+        <div class="form-floating mb-3">
+            <select class="form-select" placeholder="Pizza" name="selectedCategoryId" id="selectedCategoryId">
+                @if (Model.SelectedCategoryId is null or 0)
+                {
+                    <option selected disabled>Choose...</option>
+                }
+
+                @foreach (var category in Model.Categories)
+                {
+                    @if (Model.SelectedCategoryId == category.Id)
+                    {
+                        <option value="@category.Id" selected>@category.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                }
+
+                 @if (Model.SelectedCategoryId == 0)
+                 {
+                     <option value="0" selected>All</option>
+                 }
+                 else
+                 {
+                     <option value="0">All</option>
+                 }
+            </select>
+            <label class="form-label" for="selectedCategoryId">Choose category</label>
+        </div>
         <input type="submit" class="btn btn-primary" value="Filter"/>
     </form>
     
