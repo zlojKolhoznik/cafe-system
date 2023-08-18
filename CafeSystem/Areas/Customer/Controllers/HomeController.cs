@@ -1,3 +1,4 @@
+using CafeSystem.Areas.Customer.ViewModels;
 using CafeSystem.Data;
 using CafeSystem.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +19,12 @@ public class HomeController : Controller
     }
 
     // GET
-    public IActionResult Index(int? id)
+    public IActionResult Index(int? id, int? selectedCategoryId)
     {
         IEnumerable<Dish> dishes = _dbContext.Dishes.Include(d => d.Category).ToList();
+        IEnumerable<Category> categories = _dbContext.Categories.ToList();
         ViewData["TableNumber"] = id;
-        return View(dishes);
+        return View(new HomeViewModel(dishes, categories, selectedCategoryId));
     }
 
     // POST

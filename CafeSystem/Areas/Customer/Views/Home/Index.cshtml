@@ -1,4 +1,4 @@
-@model System.Collections.Generic.IEnumerable<CafeSystem.Models.Dish>
+@model CafeSystem.Areas.Customer.ViewModels.HomeViewModel
 
 @{
     ViewData["Title"] = "Menu";
@@ -31,22 +31,43 @@ else
 {
     <h2 class="text-primary text-center">Menu for table #@ViewData["TableNumber"]</h2>
     <hr>
+    
+    <form method="get">
+        <select class="form-select" name="selectedCategoryId" id="selectedCategoryId">
+            @if (Model.SelectedCategoryId is null or 0)
+            {
+                <option selected disabled>Choose...</option>
+            }
+            
+            @foreach (var category in Model.Categories)
+            {
+                <option value="@category.Id" @(Model.SelectedCategoryId == category.Id ? "selected" : "")>@category.Name</option>
+            }
+            
+            <option value="0" @(Model.SelectedCategoryId == 0 ? "selected" : "")>All</option>
+        </select>
+        <label class="form-label" for="selectedCategoryId">Choose category</label>
+        
+        <input type="submit" class="btn btn-primary" value="Filter"/>
+    </form>
+    
+    <hr>
     <div class="row">
-        @foreach (var item in Model)
+        @foreach (var dish in Model.Dishes.Where(d => Model.SelectedCategoryId is null or 0 || d.CategoryId == Model.SelectedCategoryId))
         {
             <div class="col-md-3">
                 <div class="card mb-4 p-3 shadow-sm">
-                    <img class="card-img-top" src="~/@item.ImagePath" alt="Card image cap">
+                    <img class="card-img-top" src="~/@dish.ImagePath" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title">@item.Name</h5>
-                        <p class="card-subtitle text-muted">@item.Category</p>
-                        <p class="card-text text-info">@item.Price₴</p>
+                        <h5 class="card-title">@dish.Name</h5>
+                        <p class="card-subtitle text-muted">@dish.Category</p>
+                        <p class="card-text text-info">@dish.Price₴</p>
                         <form method="post">
                             <div class="input-group mb-3">
                                 <input class="form-control text-end" type="number" name="quantity" id="quantity" value="1" min="1">
                                 <span class="input-group-text">Quantity</span>
                             </div>
-                            <input type="hidden" name="dishId" value="@item.Id"/>
+                            <input type="hidden" name="dishId" value="@dish.Id"/>
                             <input type="hidden" name="tableNumber" value="@ViewData["TableNumber"]"/>
                             <input type="submit" class="btn btn-primary" value="Add to cart"/>
                         </form>
