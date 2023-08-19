@@ -118,11 +118,13 @@ namespace CafeSystem.Areas.Identity.Pages.Account
                     var user = await _userManager.FindByNameAsync(Input.Username);
                     if (_userManager.IsInRoleAsync(user, StaticDetails.RoleAdmin).GetAwaiter().GetResult())
                     {
+                        _logger.LogInformation("User is admin.");
                         return RedirectToAction("Index", "Home", new { area = "Admin" });
                     }
 
                     if (!_userManager.IsInRoleAsync(user, StaticDetails.RoleNone).GetAwaiter().GetResult())
                     {
+                        _logger.LogInformation("User is employee.");
                         return RedirectToAction("Index", "Home", new { area = "Employee" });
                     }
 
