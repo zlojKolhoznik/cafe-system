@@ -14,7 +14,7 @@ To login as an employee of restaurant - follow this link: http://130.61.187.42/i
 # Admin account
 Admin account lets the administator of the restaurant to edit menu and list of cooks and watiers.
 
-#Technology stack
+# Technology stack
 * .NET 7
 * ASP.NET Core
 * Bootstrap
